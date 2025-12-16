@@ -17,4 +17,6 @@ public class OpenApiConfig {
                         new Server().url("https://9005.vs.amypo.ai")
                 ));
         }
-}
+} public List<Studententity> getAll() {
+        return new ArrayList<>(details.values());
+    }
