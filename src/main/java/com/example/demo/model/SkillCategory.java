@@ -1,12 +1,11 @@
 package com.example.demo.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
-@Table(
-    name = "skill_categories",
-    uniqueConstraints = @UniqueConstraint(columnNames = "categoryName")
-)
 public class SkillCategory {
 
     @Id
@@ -15,13 +14,13 @@ public class SkillCategory {
 
     private String categoryName;
     private String description;
-    private Boolean active = true;
+    private boolean active;
 
     public SkillCategory() {
     }
 
     public SkillCategory(Long id, String categoryName,
-                         String description, Boolean active) {
+                         String description, boolean active) {
         this.id = id;
         this.categoryName = categoryName;
         this.description = description;
@@ -29,12 +28,14 @@ public class SkillCategory {
     }
 
     public Long getId() { return id; }
-    public String getCategoryName() { return categoryName; }
-    public String getDescription() { return description; }
-    public Boolean getActive() { return active; }
-
     public void setId(Long id) { this.id = id; }
+
+    public String getCategoryName() { return categoryName; }
     public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
+
+    public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
-    public void setActive(Boolean active) { this.active = active; }
+
+    public boolean getActive() { return active; }
+    public void setActive(boolean active) { this.active = active; }
 }
