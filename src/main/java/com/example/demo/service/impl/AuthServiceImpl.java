@@ -22,9 +22,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse register(AuthRegisterRequest request) {
-        // save user to DB (you need a User entity + repository)
-        // user.setPassword(passwordEncoder.encode(request.getPassword()));
-        // userRepo.save(user);
+        // TODO: save user to DB with encoded password
+        // String encoded = passwordEncoder.encode(request.getPassword());
+        // userRepo.save(...);
 
         String token = jwtTokenProvider.generateToken(request.getEmail());
         return new AuthResponse(token);
@@ -32,7 +32,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse login(AuthLoginRequest request) {
-        // load user, verify password with passwordEncoder.matches(...)
+        // TODO: load user from DB, verify password with passwordEncoder.matches(...)
         String token = jwtTokenProvider.generateToken(request.getEmail());
         return new AuthResponse(token);
     }
