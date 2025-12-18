@@ -17,6 +17,4 @@ public class SwaggerConfig {
                         new Server().url("https://9113.408procr.amypo.ai/")
                 ));
         }
-} public List<Studententity> getAll() {
-        return new ArrayList<>(details.values());
-    }
+} 
