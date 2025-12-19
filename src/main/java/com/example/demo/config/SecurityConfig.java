@@ -27,11 +27,18 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        // fully public endpoints (no token needed)
                         .requestMatchers(
                                 "/auth/**",
                                 "/swagger-ui/**",
-                                "/v3/api-docs/**"
+                                "/v3/api-docs/**",
+                                "/error"
                         ).permitAll()
+
+                        // allow read‑only access to API without token (optional)
+                        .requestMatchers("GET", "/api/**").permitAll()
+
+                        // everything else (POST/PUT/DELETE on /api/**) requires JWT
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
