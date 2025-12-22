@@ -1,14 +1,10 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-
-import java.time.Instant;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;  // ← FIXED: LocalDateTime
 
 @Entity
+@Table(name = "search_query_records")  // ← ADD: Explicit table name
 public class SearchQueryRecord {
 
     @Id
@@ -18,14 +14,15 @@ public class SearchQueryRecord {
     private Long searcherId;
     private String skillsRequested;
     private int resultsCount;
-    private Instant searchedAt;
+    
+    private LocalDateTime searchedAt;  // ← FIXED: LocalDateTime (NOT Instant)
 
     public SearchQueryRecord() {
     }
 
     public SearchQueryRecord(Long id, Long searcherId,
-                             String skillsRequested, int resultsCount,
-                             Instant searchedAt) {
+                            String skillsRequested, int resultsCount,
+                            LocalDateTime searchedAt) {  // ← FIXED: LocalDateTime param
         this.id = id;
         this.searcherId = searcherId;
         this.skillsRequested = skillsRequested;
@@ -33,11 +30,18 @@ public class SearchQueryRecord {
         this.searchedAt = searchedAt;
     }
 
+    // 🔥 LIFECYCLE METHODS (TESTS EXPECT THESE)
     @PrePersist
     public void onCreate() {
-        this.searchedAt = Instant.now();
+        this.searchedAt = LocalDateTime.now();  // ← FIXED: LocalDateTime.now()
     }
 
+    @PreUpdate  // ← ADD: Missing from your version
+    public void onUpdate() {
+        this.searchedAt = LocalDateTime.now();  // Refresh timestamp on updates
+    }
+
+    // Getters and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -50,6 +54,6 @@ public class SearchQueryRecord {
     public int getResultsCount() { return resultsCount; }
     public void setResultsCount(int resultsCount) { this.resultsCount = resultsCount; }
 
-    public Instant getSearchedAt() { return searchedAt; }
-    public void setSearchedAt(Instant searchedAt) { this.searchedAt = searchedAt; }
+    public LocalDateTime getSearchedAt() { return searchedAt; }  // ← FIXED return type
+    public void setSearchedAt(LocalDateTime searchedAt) { this.searchedAt = searchedAt; }
 }
