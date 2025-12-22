@@ -26,7 +26,7 @@ public class SkillServiceImpl implements SkillService {
     public Skill updateSkill(Long id, Skill skill) {
         Skill existing = getSkillById(id);
         existing.setName(skill.getName());
-        existing.setCategory(skill.getCategory());
+        existing.setCategory(skill.getCategoryId());
         existing.setDescription(skill.getDescription());
         existing.setActive(skill.getActive());
         return skillRepository.save(existing);
