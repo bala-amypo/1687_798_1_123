@@ -1,15 +1,10 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-
-import java.time.Instant;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;  // ← CHANGED: LocalDateTime
 
 @Entity
+@Table(name = "employees")  // ← ADD: Explicit table name
 public class Employee {
 
     @Id
@@ -21,17 +16,18 @@ public class Employee {
     private String department;
     private String jobTitle;
     private boolean active;
-    private Instant createdAt;
-    private Instant updatedAt;
+    
+    private LocalDateTime createdAt;  // ← FIXED: LocalDateTime
+    private LocalDateTime updatedAt;  // ← FIXED: LocalDateTime
 
     // Default constructor
     public Employee() {
     }
 
-    // Parameterized constructor
+    // Parameterized constructor (KEEP but update types)
     public Employee(Long id, String fullName, String email,
-                    String department, String jobTitle,
-                    boolean active, Instant createdAt, Instant updatedAt) {
+                   String department, String jobTitle,
+                   boolean active, LocalDateTime createdAt, LocalDateTime updatedAt) {  // ← FIXED types
         this.id = id;
         this.fullName = fullName;
         this.email = email;
@@ -44,7 +40,7 @@ public class Employee {
 
     @PrePersist
     public void onCreate() {
-        Instant now = Instant.now();
+        LocalDateTime now = LocalDateTime.now();  // ← FIXED: LocalDateTime.now()
         this.createdAt = now;
         this.updatedAt = now;
         this.active = true;
@@ -52,7 +48,7 @@ public class Employee {
 
     @PreUpdate
     public void onUpdate() {
-        this.updatedAt = Instant.now();
+        this.updatedAt = LocalDateTime.now();  // ← FIXED: LocalDateTime.now()
     }
 
     // Getters and setters
@@ -74,9 +70,9 @@ public class Employee {
     public boolean getActive() { return active; }
     public void setActive(boolean active) { this.active = active; }
 
-    public Instant getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
+    public LocalDateTime getCreatedAt() { return createdAt; }  // ← FIXED return type
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
-    public Instant getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(Instant updatedAt) { this.updatedAt = updatedAt; }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }  // ← FIXED return type
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }
