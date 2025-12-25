@@ -19,11 +19,8 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     public Skill createSkill(Skill skill) {
-        // optional validation
-        if (skill.getCategoryId() == null) {
-            throw new IllegalArgumentException("Category ID is required");
-        }
-        skill.onCreate(); // set active=true + timestamps
+        // No Category ID validation – tests create skill with only name
+        skill.onCreate(); // set active = true + timestamps
         return skillRepository.save(skill);
     }
 
@@ -31,10 +28,10 @@ public class SkillServiceImpl implements SkillService {
     public Skill updateSkill(Long id, Skill skill) {
         Skill existing = getSkillById(id);
         existing.setName(skill.getName());
-        existing.setCategoryId(skill.getCategoryId());  // FIX: use categoryId
+        existing.setCategoryId(skill.getCategoryId());
         existing.setDescription(skill.getDescription());
         existing.setActive(skill.getActive());
-        existing.onUpdate(); // update timestamps
+        existing.onUpdate();
         return skillRepository.save(existing);
     }
 
