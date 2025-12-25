@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Entity
 public class Employee {
@@ -21,8 +21,8 @@ public class Employee {
     private String department;
     private String jobTitle;
     private boolean active;
-    private Instant createdAt;
-    private Instant updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     // Default constructor
     public Employee() {
@@ -31,7 +31,7 @@ public class Employee {
     // Parameterized constructor
     public Employee(Long id, String fullName, String email,
                     String department, String jobTitle,
-                    boolean active, Instant createdAt, Instant updatedAt) {
+                    boolean active, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
@@ -44,7 +44,7 @@ public class Employee {
 
     @PrePersist
     public void onCreate() {
-        Instant now = Instant.now();
+        LocalDateTime now = LocalDateTime.now();
         this.createdAt = now;
         this.updatedAt = now;
         this.active = true;
@@ -52,7 +52,7 @@ public class Employee {
 
     @PreUpdate
     public void onUpdate() {
-        this.updatedAt = Instant.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     // Getters and setters
@@ -74,9 +74,9 @@ public class Employee {
     public boolean getActive() { return active; }
     public void setActive(boolean active) { this.active = active; }
 
-    public Instant getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
-    public Instant getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(Instant updatedAt) { this.updatedAt = updatedAt; }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }
