@@ -11,16 +11,15 @@ import java.util.List;
 @Service
 public class SkillCategoryServiceImpl implements SkillCategoryService {
 
-    private final SkillCategoryRepository skillCategoryRepository;
+    private final SkillCategoryRepository categoryRepository;
 
-    public SkillCategoryServiceImpl(SkillCategoryRepository skillCategoryRepository) {
-        this.skillCategoryRepository = skillCategoryRepository;
+    public SkillCategoryServiceImpl(SkillCategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
     public SkillCategory createCategory(SkillCategory category) {
-        category.onCreate();
-        return skillCategoryRepository.save(category);
+        return categoryRepository.save(category);
     }
 
     @Override
@@ -29,26 +28,24 @@ public class SkillCategoryServiceImpl implements SkillCategoryService {
         existing.setCategoryName(category.getCategoryName());
         existing.setDescription(category.getDescription());
         existing.setActive(category.getActive());
-        existing.onUpdate();
-        return skillCategoryRepository.save(existing);
+        return categoryRepository.save(existing);
     }
 
     @Override
     public SkillCategory getCategoryById(Long id) {
-        return skillCategoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("SkillCategory not found"));
+        return categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
     }
 
     @Override
     public List<SkillCategory> getAllCategories() {
-        return skillCategoryRepository.findAll();
+        return categoryRepository.findAll();
     }
 
     @Override
     public void deactivateCategory(Long id) {
         SkillCategory existing = getCategoryById(id);
         existing.setActive(false);
-        existing.onUpdate();
-        skillCategoryRepository.save(existing);
+        categoryRepository.save(existing);
     }
 }

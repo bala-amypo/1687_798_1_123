@@ -19,10 +19,6 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     public Skill createSkill(Skill skill) {
-        if (skill.getCategoryId() == null) {
-            throw new IllegalArgumentException("Category ID is required");
-        }
-        skill.onCreate();
         return skillRepository.save(skill);
     }
 
@@ -30,10 +26,9 @@ public class SkillServiceImpl implements SkillService {
     public Skill updateSkill(Long id, Skill skill) {
         Skill existing = getSkillById(id);
         existing.setName(skill.getName());
-        existing.setCategoryId(skill.getCategoryId());
+        existing.setCategory(skill.getCategory());
         existing.setDescription(skill.getDescription());
         existing.setActive(skill.getActive());
-        existing.onUpdate();
         return skillRepository.save(existing);
     }
 
@@ -52,7 +47,6 @@ public class SkillServiceImpl implements SkillService {
     public void deactivateSkill(Long id) {
         Skill existing = getSkillById(id);
         existing.setActive(false);
-        existing.onUpdate();
         skillRepository.save(existing);
     }
 }
