@@ -5,8 +5,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Entity
 public class SearchQueryRecord {
@@ -18,14 +19,16 @@ public class SearchQueryRecord {
     private Long searcherId;
     private String skillsRequested;
     private int resultsCount;
-    private Instant searchedAt;
+    private LocalDateTime searchedAt;
 
     public SearchQueryRecord() {
     }
 
-    public SearchQueryRecord(Long id, Long searcherId,
-                             String skillsRequested, int resultsCount,
-                             Instant searchedAt) {
+    public SearchQueryRecord(Long id,
+                             Long searcherId,
+                             String skillsRequested,
+                             int resultsCount,
+                             LocalDateTime searchedAt) {
         this.id = id;
         this.searcherId = searcherId;
         this.skillsRequested = skillsRequested;
@@ -35,7 +38,13 @@ public class SearchQueryRecord {
 
     @PrePersist
     public void onCreate() {
-        this.searchedAt = Instant.now();
+        this.searchedAt = LocalDateTime.now();
+        this.resultsCount = (this.resultsCount == 0 ? 0 : this.resultsCount);
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        this.searchedAt = LocalDateTime.now();
     }
 
     public Long getId() { return id; }
@@ -50,6 +59,6 @@ public class SearchQueryRecord {
     public int getResultsCount() { return resultsCount; }
     public void setResultsCount(int resultsCount) { this.resultsCount = resultsCount; }
 
-    public Instant getSearchedAt() { return searchedAt; }
-    public void setSearchedAt(Instant searchedAt) { this.searchedAt = searchedAt; }
+    public LocalDateTime getSearchedAt() { return searchedAt; }
+    public void setSearchedAt(LocalDateTime searchedAt) { this.searchedAt = searchedAt; }
 }

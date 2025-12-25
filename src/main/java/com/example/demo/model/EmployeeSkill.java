@@ -1,10 +1,7 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class EmployeeSkill {
@@ -23,20 +20,44 @@ public class EmployeeSkill {
     private int yearsOfExperience;
     private boolean active;
 
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
     public EmployeeSkill() {
     }
 
-    public EmployeeSkill(Long id, Employee employee, Skill skill,
-                         String proficiencyLevel, int yearsOfExperience,
-                         boolean active) {
+    public EmployeeSkill(Long id,
+                         Employee employee,
+                         Skill skill,
+                         String proficiencyLevel,
+                         int yearsOfExperience,
+                         boolean active,
+                         LocalDateTime createdAt,
+                         LocalDateTime updatedAt) {
         this.id = id;
         this.employee = employee;
         this.skill = skill;
         this.proficiencyLevel = proficiencyLevel;
         this.yearsOfExperience = yearsOfExperience;
         this.active = active;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
+    @PrePersist
+    public void onCreate() {
+        LocalDateTime now = LocalDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;
+        this.active = true;
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    // Getters and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -54,4 +75,10 @@ public class EmployeeSkill {
 
     public boolean getActive() { return active; }
     public void setActive(boolean active) { this.active = active; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }
