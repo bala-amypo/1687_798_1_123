@@ -3,11 +3,13 @@ package com.example.demo.controller;
 import com.example.demo.model.EmployeeSkill;
 import com.example.demo.service.EmployeeSkillService;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/employee-skills")
 public class EmployeeSkillController {
+
     private final EmployeeSkillService employeeSkillService;
 
     public EmployeeSkillController(EmployeeSkillService employeeSkillService) {

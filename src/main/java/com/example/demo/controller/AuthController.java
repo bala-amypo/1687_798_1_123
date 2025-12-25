@@ -1,28 +1,34 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.AuthLoginRequest;
-import com.example.demo.dto.AuthRegisterRequest;
-import com.example.demo.dto.AuthResponse;
-import com.example.demo.service.AuthService;
+import com.example.demo.model.Employee;
+import com.example.demo.repository.EmployeeRepository;
+import com.example.demo.security.JwtTokenProvider;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final AuthService authService;
+    private final EmployeeRepository employeeRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    public AuthController(AuthService authService) {
-        this.authService = authService;
+    public AuthController(EmployeeRepository employeeRepository,
+                          JwtTokenProvider jwtTokenProvider) {
+        this.employeeRepository = employeeRepository;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    @PostMapping("/register")
-    public AuthResponse register(@RequestBody AuthRegisterRequest request) {
-        return authService.register(request);
-    }
-
+    // Very simple login: find employee by email and issue token
     @PostMapping("/login")
-    public AuthResponse login(@RequestBody AuthLoginRequest request) {
-        return authService.login(request);
+    public String login(@RequestParam String email,
+                        @RequestParam(defaultValue = "USER") String role) {
+        Optional<Employee> empOpt = employeeRepository.findByEmail(email);
+        if (empOpt.isEmpty()) {
+            throw new RuntimeException("Employee not found");
+        }
+        Employee emp = empOpt.get();
+        return jwtTokenProvider.generateToken(emp.getId(), emp.getEmail(), role);
     }
 }
