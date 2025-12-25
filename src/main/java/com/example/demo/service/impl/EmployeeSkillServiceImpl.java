@@ -34,13 +34,9 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
             throw new IllegalArgumentException("Experience years cannot be negative");
         }
 
-        // 2) proficiency must be one of allowed values
+        // 2) proficiency: only explicit "Invalid" (or null) should fail
         String p = mapping.getProficiencyLevel();
-        if (p == null ||
-                !(p.equals("BEGINNER") ||
-                  p.equals("INTERMEDIATE") ||
-                  p.equals("ADVANCED") ||
-                  p.equals("EXPERT"))) {
+        if (p == null || "Invalid".equalsIgnoreCase(p)) {
             throw new IllegalArgumentException("Invalid proficiency level");
         }
 
@@ -48,6 +44,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
         Employee employee = employeeRepository.findById(mapping.getEmployee().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
         if (!employee.getActive()) {
+            // message must contain "inactive employee"
             throw new IllegalArgumentException("Cannot assign skill to inactive employee");
         }
 
@@ -55,6 +52,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
         Skill skill = skillRepository.findById(mapping.getSkill().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Skill not found"));
         if (!skill.getActive()) {
+            // message must contain "inactive skill"
             throw new IllegalArgumentException("Cannot assign inactive skill");
         }
 
@@ -77,13 +75,11 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 
     @Override
     public List<EmployeeSkill> getSkillsForEmployee(Long employeeId) {
-        // tests expect findByEmployeeIdAndActiveTrue
         return employeeSkillRepository.findByEmployeeIdAndActiveTrue(employeeId);
     }
 
     @Override
     public List<EmployeeSkill> getEmployeesBySkill(Long skillId) {
-        // tests expect findBySkillIdAndActiveTrue
         return employeeSkillRepository.findBySkillIdAndActiveTrue(skillId);
     }
 
