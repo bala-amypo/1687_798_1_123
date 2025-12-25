@@ -1,43 +1,41 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.EmployeeSkill;
-import com.example.demo.service.EmployeeSkillService;
+import com.example.demo.model.Skill;
+import com.example.demo.service.SkillService;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/employee-skills")
-public class EmployeeSkillController {
+@RequestMapping("/api/skills")
+public class SkillController {
+    private final SkillService skillService;
 
-    private final EmployeeSkillService employeeSkillService;
-
-    public EmployeeSkillController(EmployeeSkillService employeeSkillService) {
-        this.employeeSkillService = employeeSkillService;
+    public SkillController(SkillService skillService) {
+        this.skillService = skillService;
     }
 
     @PostMapping
-    public EmployeeSkill create(@RequestBody EmployeeSkill mapping) {
-        return employeeSkillService.createEmployeeSkill(mapping);
+    public Skill create(@RequestBody Skill skill) {
+        return skillService.createSkill(skill);
     }
 
     @PutMapping("/{id}")
-    public EmployeeSkill update(@PathVariable Long id, @RequestBody EmployeeSkill mapping) {
-        return employeeSkillService.updateEmployeeSkill(id, mapping);
+    public Skill update(@PathVariable Long id, @RequestBody Skill skill) {
+        return skillService.updateSkill(id, skill);
     }
 
-    @GetMapping("/employee/{employeeId}")
-    public List<EmployeeSkill> getByEmployee(@PathVariable Long employeeId) {
-        return employeeSkillService.getSkillsForEmployee(employeeId);
+    @GetMapping("/{id}")
+    public Skill getById(@PathVariable Long id) {
+        return skillService.getSkillById(id);
     }
 
-    @GetMapping("/skill/{skillId}")
-    public List<EmployeeSkill> getBySkill(@PathVariable Long skillId) {
-        return employeeSkillService.getEmployeesBySkill(skillId);
+    @GetMapping
+    public List<Skill> getAll() {
+        return skillService.getAllSkills();
     }
 
     @PutMapping("/{id}/deactivate")
     public void deactivate(@PathVariable Long id) {
-        employeeSkillService.deactivateEmployeeSkill(id);
+        skillService.deactivateSkill(id);
     }
 }

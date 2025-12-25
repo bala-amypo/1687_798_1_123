@@ -1,46 +1,50 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "skills")
 public class Skill {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
-    private String category;
+    @Column(name = "category_id")
+    private Long categoryId;
     private String description;
     private boolean active;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-    public Skill() {
+    public Skill() {}
+
+    @PrePersist
+    public void onCreate() {
+        this.active = true;
+        LocalDateTime now = LocalDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;
     }
 
-    public Skill(Long id, String name, String category,
-                 String description, boolean active) {
-        this.id = id;
-        this.name = name;
-        this.category = category;
-        this.description = description;
-        this.active = active;
+    @PreUpdate
+    public void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
     }
 
+    // ALL GETTERS/SETTERS
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
-
-    public String getCategory() { return category; }
-    public void setCategory(String category) { this.category = category; }
-
+    public Long getCategoryId() { return categoryId; }
+    public void setCategoryId(Long categoryId) { this.categoryId = categoryId; }
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
-
     public boolean getActive() { return active; }
     public void setActive(boolean active) { this.active = active; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }
