@@ -4,6 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+
+import java.time.LocalDateTime;
 
 @Entity
 public class SkillCategory {
@@ -16,15 +20,37 @@ public class SkillCategory {
     private String description;
     private boolean active;
 
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
     public SkillCategory() {
     }
 
-    public SkillCategory(Long id, String categoryName,
-                         String description, boolean active) {
+    public SkillCategory(Long id,
+                         String categoryName,
+                         String description,
+                         boolean active,
+                         LocalDateTime createdAt,
+                         LocalDateTime updatedAt) {
         this.id = id;
         this.categoryName = categoryName;
         this.description = description;
         this.active = active;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    @PrePersist
+    public void onCreate() {
+        this.active = true;
+        LocalDateTime now = LocalDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
     }
 
     public Long getId() { return id; }
@@ -38,4 +64,10 @@ public class SkillCategory {
 
     public boolean getActive() { return active; }
     public void setActive(boolean active) { this.active = active; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }
