@@ -23,7 +23,8 @@ public class Skill {
     private Long categoryId;
 
     private String description;
-    private boolean active;
+    // Default active = true so tests that just new Skill() pass
+    private boolean active = true;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

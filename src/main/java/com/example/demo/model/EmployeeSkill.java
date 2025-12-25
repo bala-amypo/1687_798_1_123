@@ -18,7 +18,8 @@ public class EmployeeSkill {
 
     private String proficiencyLevel;
     private int yearsOfExperience;
-    private boolean active;
+    // Default active = true so tests that just new EmployeeSkill() pass
+    private boolean active = true;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
