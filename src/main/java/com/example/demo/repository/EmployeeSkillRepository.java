@@ -9,26 +9,24 @@ import java.util.List;
 
 public interface EmployeeSkillRepository extends JpaRepository<EmployeeSkill, Long> {
 
-    // Basic helpers
+    // Simple helpers (not used in tests but ok to keep)
     List<EmployeeSkill> findByEmployeeId(Long employeeId);
-
     List<EmployeeSkill> findBySkillId(Long skillId);
 
-    // Required by tests
-    List<EmployeeSkill> findByEmployeeIdAndActiveTrue(long employeeId);
+    // Tests expect these exact signatures
+    List<EmployeeSkill> findByEmployeeIdAndActiveTrue(Long employeeId);
+    List<EmployeeSkill> findBySkillIdAndActiveTrue(Long skillId);
 
-    List<EmployeeSkill> findBySkillIdAndActiveTrue(long skillId);
-
-    // Required by tests: signature must match exactly
+    // HQL-like query used by SearchQueryServiceImpl tests
     @Query("""
            select es.employee
            from EmployeeSkill es
            where es.active = true
              and es.employee.active = true
              and es.skill.active = true
-             and es.skill.name in ?1
+             and lower(es.skill.name) in ?1
            group by es.employee
-           having count(distinct es.skill.name) = ?2
+           having count(distinct lower(es.skill.name)) = ?2
            """)
-    List<Employee> findEmployeesByAllSkillNames(List<Object> skills, long userId);
+    List<Employee> findEmployeesByAllSkillNames(List<String> skills, Long requiredCount);
 }

@@ -39,7 +39,7 @@ public class SearchQueryRecord {
     @PrePersist
     public void onCreate() {
         this.searchedAt = LocalDateTime.now();
-        this.resultsCount = (this.resultsCount == 0 ? 0 : this.resultsCount);
+        // do NOT overwrite resultsCount
     }
 
     @PreUpdate
@@ -47,6 +47,7 @@ public class SearchQueryRecord {
         this.searchedAt = LocalDateTime.now();
     }
 
+    // getters/setters unchanged
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
