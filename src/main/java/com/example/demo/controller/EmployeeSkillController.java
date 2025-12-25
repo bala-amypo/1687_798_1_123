@@ -1,41 +1,36 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Skill;
-import com.example.demo.service.SkillService;
+import com.example.demo.model.EmployeeSkill;
+import com.example.demo.service.EmployeeSkillService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/skills")
-public class SkillController {
-    private final SkillService skillService;
+@RequestMapping("/api/employee-skills")
+public class EmployeeSkillController {
+    private final EmployeeSkillService employeeSkillService;
 
-    public SkillController(SkillService skillService) {
-        this.skillService = skillService;
+    public EmployeeSkillController(EmployeeSkillService employeeSkillService) {
+        this.employeeSkillService = employeeSkillService;
     }
 
     @PostMapping
-    public Skill create(@RequestBody Skill skill) {
-        return skillService.createSkill(skill);
-    }
-
-    @PutMapping("/{id}")
-    public Skill update(@PathVariable Long id, @RequestBody Skill skill) {
-        return skillService.updateSkill(id, skill);
-    }
-
-    @GetMapping("/{id}")
-    public Skill getById(@PathVariable Long id) {
-        return skillService.getSkillById(id);
-    }
-
-    @GetMapping
-    public List<Skill> getAll() {
-        return skillService.getAllSkills();
+    public EmployeeSkill create(@RequestBody EmployeeSkill employeeSkill) {
+        return employeeSkillService.createEmployeeSkill(employeeSkill);
     }
 
     @PutMapping("/{id}/deactivate")
     public void deactivate(@PathVariable Long id) {
-        skillService.deactivateSkill(id);
+        employeeSkillService.deactivateEmployeeSkill(id);
+    }
+
+    @GetMapping("/employee/{employeeId}")
+    public List<EmployeeSkill> getSkillsForEmployee(@PathVariable Long employeeId) {
+        return employeeSkillService.getSkillsForEmployee(employeeId);
+    }
+
+    @GetMapping("/skill/{skillId}")
+    public List<EmployeeSkill> getEmployeesBySkill(@PathVariable Long skillId) {
+        return employeeSkillService.getEmployeesBySkill(skillId);
     }
 }
