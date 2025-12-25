@@ -1,10 +1,9 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.AuthLoginRequest;
-import com.example.demo.dto.AuthRegisterRequest;
-import com.example.demo.dto.AuthResponse;
-
 public interface AuthService {
-    AuthResponse register(AuthRegisterRequest request);
-    AuthResponse login(AuthLoginRequest request);
+
+    /**
+     * Simple login: find employee by email and generate JWT with given role.
+     */
+    String login(String email, String role);
 }

@@ -19,6 +19,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee createEmployee(Employee employee) {
+        employee.onCreate();
         return employeeRepository.save(employee);
     }
 
@@ -29,7 +30,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         existing.setEmail(employee.getEmail());
         existing.setDepartment(employee.getDepartment());
         existing.setJobTitle(employee.getJobTitle());
-        existing.setActive(employee.getActive());
+        existing.onUpdate();
         return employeeRepository.save(existing);
     }
 
@@ -48,6 +49,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void deactivateEmployee(Long id) {
         Employee existing = getEmployeeById(id);
         existing.setActive(false);
+        existing.onUpdate();
         employeeRepository.save(existing);
     }
 }
