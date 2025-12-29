@@ -97,12 +97,6 @@
             <scope>test</scope>
         </dependency>
         <!-- 🔥 H2 DATABASE (ADD THIS LINE) -->
-<dependency>
-    <groupId>com.h2database</groupId>
-    <artifactId>h2</artifactId>
-    <scope>runtime</scope>
-</dependency>
-
     </dependencies>
 
     <build>
